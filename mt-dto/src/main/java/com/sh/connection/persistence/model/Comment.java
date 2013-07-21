@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class Comment implements HasId, Serializable {
 	private static final long serialVersionUID = 2528140579425021435L;
-
+  
 	@Id
 	@GeneratedValue
 	private Long id;
