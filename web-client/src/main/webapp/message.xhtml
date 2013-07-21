@@ -1,0 +1,36 @@
+<ui:composition template="template/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:func="http://connection.sh.com/functions">
+
+	<ui:param name="title" value="Create Message" />
+
+	<ui:define name="content">
+		<f:view>
+			<h:form id="messageForm">
+				<h:panelGrid columns="2">
+				
+					<h:outputLabel for="title" value="Title:" /><br/>
+					<h:inputText id="title"
+						value="#{activeUserBean.message.title}" label="title">
+					</h:inputText><br/>
+					<h:message for="title" showSummary="true" showDetail="false"
+						styleClass="regError" /><br/>
+
+					<h:outputLabel for="text" value="Text:" /><br/>
+					<h:inputTextarea id="text" value="#{activeUserBean.message.text}"
+						label="Title" required="true">
+					</h:inputTextarea><br/>
+					<h:message for="text" showSummary="true" showDetail="false"
+						styleClass="regError" /><br/>
+
+					<h:commandButton action="#{activeUserBean.sendMessage}"
+						value="Send" id="sendBtn" styleClass="btn" />
+				</h:panelGrid>
+			</h:form>
+		</f:view>
+	</ui:define>
+</ui:composition>

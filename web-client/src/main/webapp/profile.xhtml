@@ -1,0 +1,50 @@
+<ui:composition template="template/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:param name="title" value="User profile" />
+
+	<ui:define name="content">
+		<div class="row">
+
+			<f:view>
+				
+				<f:metadata>
+					<f:event listener="#{activeUserBean.checkAccess}" type="preRenderView" />
+				</f:metadata>
+				<h:panelGroup rendered="#{activeUserBean.loggedIn}">
+					<div class="span4">
+						<h:panelGrid columns="2" styleClass="table table-bordered table-striped">
+							<h:outputLabel value="Login: " />
+							<h:outputText value="#{activeUserBean.user.login}" />
+
+							<h:outputLabel value="Name: " />
+							<h:outputText value="#{activeUserBean.user.name}" />
+
+							<h:outputLabel value="Email: " />
+							<h:outputText value="#{activeUserBean.user.email}" />
+						</h:panelGrid>
+					</div>
+					<div class="span4">
+						<h:form rendered="#{activeUserBean.loggedIn}" id="visibilityForm">
+							<h:outputLabel for="visibilitySelect" value="Page visibility" />
+							<h:selectOneRadio id="visibilitySelect" value="#{activeUserBean.user.visible}" layout="lineDirection">
+								<f:selectItem itemValue="true" itemLabel="Public" />
+								<f:selectItem itemValue="false" itemLabel="Private" />
+							</h:selectOneRadio>
+
+							<h:commandButton action="#{activeUserBean.changeVisibility}" id="changeVisibilityBtn" value="Change" styleClass="btn" />
+						</h:form>
+					</div>
+					<div class="span4">
+						<h:link value="Send new message" outcome="MESSAGE" styleClass="btn" />
+					</div>
+				</h:panelGroup>
+				
+			</f:view>
+			
+		</div>
+	</ui:define>
+</ui:composition>

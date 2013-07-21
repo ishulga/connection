@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config version="2.0" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+	metadata-complete="false">
+
+	<application>
+		<locale-config>
+			<default-locale>en</default-locale>
+		</locale-config>
+		<message-bundle>Messages</message-bundle>
+	</application>
+
+	<managed-bean>
+		<managed-bean-name>webApp</managed-bean-name>
+		<managed-bean-class>com.sh.connection.util.WebApplication</managed-bean-class>
+		<managed-bean-scope>application</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>usersBean</managed-bean-name>
+		<managed-bean-class>com.sh.connection.beans.UsersBean</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>activeUserBean</managed-bean-name>
+		<managed-bean-class>com.sh.connection.beans.ActiveUserBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>MAIN</from-outcome>
+			<to-view-id>/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>PROFILE</from-outcome>
+			<to-view-id>/profile.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>REGISTRATION</from-outcome>
+			<to-view-id>/registration.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>MESSAGE</from-outcome>
+			<to-view-id>/message.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- <converter> <converter-for-class>com.sh.connection.model.Tag</converter-for-class> 
+		<converter-class>com.sh.connection.converter.TagConverter</converter-class> 
+		</converter> -->
+
+	<validator>
+		<validator-id>com.sh.connection.validator.email</validator-id>
+		<validator-class>com.sh.connection.validator.EmailValidator</validator-class>
+	</validator>
+	<validator>
+		<validator-id>com.sh.connection.validator.confirmPassword</validator-id>
+		<validator-class>com.sh.connection.validator.ConfirmPasswordValidator</validator-class>
+	</validator>
+
+</faces-config>

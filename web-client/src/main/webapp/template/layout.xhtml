@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+	<meta charset="utf-8" />
+	<title>#{title}</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<!--     <script src="#{resource['/js/bootstrap-collapse.js']}" ></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script> -->
+    
+    <link type="text/css" rel="stylesheet" href="#{resource['/css/bootstrap.css']}"  />
+	<style type="text/css">
+		body {
+			padding-top: 60px;
+			padding-bottom: 40px;
+		}
+		.regError {
+		  color: #B94A48;
+		}
+		#globalMessages > ul {
+    	   list-style-type: none;
+		}
+		th {
+		  text-align: center !important;
+		}
+    </style>
+
+	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</h:head>
+<h:body>
+	<f:view>
+		<div class="navbar navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> 
+					   <span class="icon-bar"></span> 
+					   <span class="icon-bar"></span> 
+					   <span class="icon-bar"></span>
+					</a> 
+					<h:link value="Connection Application" styleClass="brand" outcome="MAIN"/>
+					<div class="nav-collapse">
+						<ul class="nav">
+							<li>
+							    <h:link value="Main" outcome="MAIN" />
+							</li>
+							<li>
+							     <h:link value="Send message" outcome="MESSAGE" rendered="#{activeUserBean.loggedIn}" />
+							</li>
+							<li>
+							     <h:link value="Profile" outcome="PROFILE" rendered="#{activeUserBean.loggedIn}" />
+							</li>
+						</ul>
+					</div>
+					
+					<h:form id="loginForm" rendered="#{not activeUserBean.loggedIn}" styleClass="navbar-form pull-right">
+                        Login:
+                        <h:inputText id="loginInput" value="#{activeUserBean.login}" required="true" label="Login" styleClass="span2" />
+                        Password:
+                        <h:inputSecret id="passwordInput" value="#{activeUserBean.password}" required="true" label="Password" styleClass="span2"/>
+
+                        <h:commandButton action="#{activeUserBean.login}" id="loginBtn" value="Login" styleClass="btn"/>
+                        <h:commandButton action="REGISTRATION" value="Registration" immediate="true" id="registrationBtn" styleClass="btn" />
+                    </h:form>
+                    <h:form id="logoutForm" rendered="#{activeUserBean.loggedIn}" styleClass="navbar-form pull-right">
+                        <span style="font-size: 1.2em;">
+                            Welcome,<h:commandLink action="PROFILE" value="#{activeUserBean.user.name}" style="font-size: 1.2em;"/>.
+                        </span>
+                            <h:commandButton action="#{activeUserBean.logout}" id="logoutBtn" value="Logout" styleClass="btn"/>
+                    </h:form>
+				</div>
+			</div>
+		</div>
+
+        <div class="container">
+
+            <div class="row">
+                <div id="globalMessages">
+                    <h:message for="passwordInput" styleClass="alert alert-error"/>&#160;
+                    <h:message for="loginInput" styleClass="alert alert-error"/>
+                    
+                    <h:messages globalOnly="true" infoClass="alert alert-success" errorClass="alert alert-error"/>
+                </div>
+            </div>
+            <br />
+
+            <ui:insert name="content">
+                <h1>This is default content</h1>
+            </ui:insert>
+
+			<hr />
+			<footer>
+				<p>&#169; Connection 2013</p>
+			</footer>
+		</div> <!-- /container -->
+
+	</f:view>
+</h:body>
+</html>
+
