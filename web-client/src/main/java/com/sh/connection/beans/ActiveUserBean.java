@@ -89,18 +89,17 @@ public class ActiveUserBean implements Serializable {
 	}
 
 	public void unsubscribe() {
-		if (isLoggedIn()) {
-			try {
-				userService.unsubscribeFrom(user.getId(), subscriptionId);
-				WebApplication.info(SUCCESSFULLY_UNSUBSCRIBED
-						+ userService.get(subscriptionId).getName());
-
-				user = userService.getEager(user.getId());
-			} catch (ServiceException e) {
-				WebApplication.error(e.getMessage());
-			}
-		} else {
-			WebApplication.error(LOGIN_TO_UNSUBSCRIBE);
+		if (!isLoggedIn()) {
+			WebApplication.error(LOGIN_TO_UNSUBSCRIBE);			
+			return;
+		} 
+		try {
+			userService.unsubscribeFrom(user.getId(), subscriptionId);
+			WebApplication.info(SUCCESSFULLY_UNSUBSCRIBED
+					+ userService.get(subscriptionId).getName());
+			user = userService.getEager(user.getId());
+		} catch (ServiceException e) {
+			WebApplication.error(e.getMessage());
 		}
 	}
 
