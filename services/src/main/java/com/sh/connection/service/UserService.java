@@ -22,7 +22,6 @@ import com.sh.connection.persistence.UserPL;
 import com.sh.connection.persistence.model.Post;
 import com.sh.connection.persistence.model.User;
 import com.sh.connection.util.InterfaceUtils;
-import com.sh.connection.util.ServiceFactory;
 
 public class UserService {
 
@@ -31,33 +30,11 @@ public class UserService {
 	@Autowired
 	private PostService postService;
 
-	/**
-	 * Save user with specified user data into DB.
-	 * 
-	 * @param name
-	 *            user name
-	 * @param login
-	 *            user login
-	 * @param password
-	 *            user password
-	 * @param email
-	 *            user email
-	 * @throws ServiceException
-	 *             if encountered validation error
-	 * @return user id
-	 */
 	public User register(User user) throws ServiceException {
 		validate(user);
 		return getEager(userPL.create(user));
 	}
 
-	/**
-	 * Get user instance with specified id
-	 * 
-	 * @param id
-	 *            user id to search for
-	 * @return true if user with such id exists or null otherwise
-	 */
 	public User get(Long id) {
 		return userPL.getById(id);
 	}

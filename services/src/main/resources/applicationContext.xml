@@ -47,7 +47,7 @@
         </property>
     </bean>
 
-    <!-- PL GOES HERE -->
+    <!-- persistence lier -->
     <bean id="userPL" class="com.sh.connection.persistence.UserPL">
         <property name="sessionFactory" ref="sessionFactory" />
     </bean>
@@ -58,7 +58,7 @@
         <property name="sessionFactory" ref="sessionFactory" />
     </bean>
 
-    <!-- SERVICES GOES HERE -->
+    <!-- services lier -->
     <bean id="userService" class="com.sh.connection.service.UserService" />
     <bean id="postService" class="com.sh.connection.service.PostService" />
     <bean id="commentService" class="com.sh.connection.service.CommentService" />

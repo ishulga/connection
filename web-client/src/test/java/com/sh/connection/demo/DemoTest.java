@@ -1,28 +1,15 @@
 package com.sh.connection.demo;
 
 import static com.sh.connection.util.JettyContainer.URL;
-import static com.sh.connection.util.Messages.COMMENT_SUCCESSFULLY_CREATED;
-import static com.sh.connection.util.Messages.*;
-import static com.sh.connection.util.Messages.COMMENT_SUCCESSFULLY_DELETED;
-import static com.sh.connection.util.Messages.COMMENT_SUCCESSFULLY_UPDATED;
-import static com.sh.connection.util.Messages.MISMATCHED_PASSWORDS;
-import static com.sh.connection.util.Messages.POST_SUCCESSFULLY_CREATED;
-import static com.sh.connection.util.Messages.POST_SUCCESSFULLY_DELETED;
-import static com.sh.connection.util.Messages.POST_SUCCESSFULLY_UPDATED;
 import static com.sh.connection.util.Messages.VISIBILITY_SUCCESSFULLY_CHANGED;
-import static net.sourceforge.jwebunit.junit.JWebUnit.assertButtonNotPresent;
 import static net.sourceforge.jwebunit.junit.JWebUnit.assertButtonPresent;
-import static net.sourceforge.jwebunit.junit.JWebUnit.assertButtonPresentWithText;
 import static net.sourceforge.jwebunit.junit.JWebUnit.assertElementPresent;
 import static net.sourceforge.jwebunit.junit.JWebUnit.assertLinkPresentWithExactText;
 import static net.sourceforge.jwebunit.junit.JWebUnit.assertRadioOptionSelected;
-import static net.sourceforge.jwebunit.junit.JWebUnit.assertTextInElement;
 import static net.sourceforge.jwebunit.junit.JWebUnit.assertTextNotPresent;
 import static net.sourceforge.jwebunit.junit.JWebUnit.assertTextPresent;
-import static net.sourceforge.jwebunit.junit.JWebUnit.assertTitleEquals;
 import static net.sourceforge.jwebunit.junit.JWebUnit.beginAt;
 import static net.sourceforge.jwebunit.junit.JWebUnit.clickButton;
-import static net.sourceforge.jwebunit.junit.JWebUnit.clickButtonWithText;
 import static net.sourceforge.jwebunit.junit.JWebUnit.clickLinkWithExactText;
 import static net.sourceforge.jwebunit.junit.JWebUnit.clickRadioOption;
 import static net.sourceforge.jwebunit.junit.JWebUnit.getTestingEngine;
