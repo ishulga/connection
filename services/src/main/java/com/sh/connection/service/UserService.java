@@ -18,7 +18,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.sh.connection.persistence.UserPL;
+import com.sh.connection.persistence.jpa.UserPL;
 import com.sh.connection.persistence.model.Post;
 import com.sh.connection.persistence.model.User;
 import com.sh.connection.util.InterfaceUtils;

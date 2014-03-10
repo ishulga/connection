@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sh.connection.persistence.jpa;
+package com.sh.connection;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -35,7 +35,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * configuration activating the plain JPA based repository configuration (see {@link PlainJpaConfig}) as well as the
  * Spring Data JPA based one (see {@link ApplicationConfig}).
  * 
- * @author Oliver Gierke
  */
 @Configuration
 @EnableTransactionManagement
@@ -70,7 +69,7 @@ public class InfrastructureConfig {
 
 		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
 		factory.setJpaVendorAdapter(vendorAdapter);
-		factory.setPackagesToScan("com.sh.connection");
+		factory.setPackagesToScan(getClass().getPackage().getName());
 		factory.setDataSource(dataSource());
 
 		return factory;
@@ -78,7 +77,6 @@ public class InfrastructureConfig {
 
 	@Bean
 	public PlatformTransactionManager transactionManager() {
-
 		JpaTransactionManager txManager = new JpaTransactionManager();
 		txManager.setEntityManagerFactory(entityManagerFactory().getObject());
 		return txManager;

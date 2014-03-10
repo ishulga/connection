@@ -8,7 +8,7 @@ import java.util.Date;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.sh.connection.persistence.PostPL;
+import com.sh.connection.persistence.jpa.PostPL;
 import com.sh.connection.persistence.model.Comment;
 import com.sh.connection.persistence.model.Post;
 import com.sh.connection.util.ServiceFactory;

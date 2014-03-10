@@ -1,4 +1,4 @@
-package com.sh.connection.persistence;
+package com.sh.connection.persistence.jpa;
 
 import java.io.Serializable;
 import java.util.HashSet;

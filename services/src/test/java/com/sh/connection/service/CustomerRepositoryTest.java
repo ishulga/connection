@@ -15,7 +15,8 @@
  */
 package com.sh.connection.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +25,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sh.connection.persistence.jpa.ApplicationConfig;
+import com.sh.connection.ApplicationConfig;
 import com.sh.connection.persistence.jpa.CustomerRepository;
 import com.sh.connection.persistence.model.Customer;
 
