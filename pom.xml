@@ -11,7 +11,7 @@
         <generated.sources.folder>${project.build.directory}/generated-sources</generated.sources.folder>
         <!-- dependency versions -->
         <powermock.version>1.4.9</powermock.version>
-        <spring.version>3.1.2.RELEASE</spring.version>
+        <spring.version>3.2.1.RELEASE</spring.version>
         <hibernate.version>3.6.5.Final</hibernate.version>
     </properties>
 
@@ -112,11 +112,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>provided</scope>
@@ -146,6 +141,14 @@
         	<artifactId>mysql-connector-java</artifactId>
         	<version>5.1.21</version>
         </dependency>
+        
+        
+         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        
     </dependencies>
 
     <dependencyManagement>
@@ -188,12 +191,6 @@
                 <scope>test</scope>
             </dependency>
             <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-test</artifactId>
-                <version>${spring.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
                 <groupId>org.hsqldb</groupId>
                 <artifactId>hsqldb</artifactId>
                 <version>2.2.4</version>
@@ -217,6 +214,14 @@
                 <version>3.0</version>
                 <scope>test</scope>
             </dependency>
+            
+            
+             <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-test</artifactId>
+                <version>${spring.version}</version>
+                <scope>test</scope>
+            </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-core</artifactId>
@@ -227,6 +232,13 @@
                 <artifactId>spring-tx</artifactId>
                 <version>${spring.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-orm</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            
+            
             <dependency>
                 <groupId>commons-lang</groupId>
                 <artifactId>commons-lang</artifactId>
@@ -251,11 +263,6 @@
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-validator</artifactId>
                 <version>4.1.0.Final</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-orm</artifactId>
-                <version>${spring.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.hibernate</groupId>
