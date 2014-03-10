@@ -15,6 +15,8 @@
  */
 package com.sh.connection.service;
 
+import static org.junit.Assert.*;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +25,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sh.connection.persistence.jpa.ApplicationConfig;
-import com.sh.connection.persistence.jpa.Customer;
 import com.sh.connection.persistence.jpa.CustomerRepository;
+import com.sh.connection.persistence.model.Customer;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
@@ -32,12 +34,18 @@ import com.sh.connection.persistence.jpa.CustomerRepository;
 public class CustomerRepositoryTest {
 
 	@Autowired
-	CustomerRepository customerRepository;
+	CustomerRepository customerRepo;
 
 	@Test
 	public void savesCustomerCorrectly() {
 		Customer c = new Customer();
-		
+		c.setName("myname");
+		Customer persisted = customerRepo.save(c);
+		assertNotNull(persisted.getId());
+		assertEquals("myname", persisted.getName());
+		Customer findOne = customerRepo.findOne(persisted.getId());
+		assertNotNull(findOne.getId());
+		assertEquals("myname", findOne.getName());
 	}
 
 }

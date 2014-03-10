@@ -70,7 +70,7 @@ public class InfrastructureConfig {
 
 		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
 		factory.setJpaVendorAdapter(vendorAdapter);
-		factory.setPackagesToScan(getClass().getPackage().getName());
+		factory.setPackagesToScan("com.sh.connection");
 		factory.setDataSource(dataSource());
 
 		return factory;
