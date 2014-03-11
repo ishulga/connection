@@ -8,17 +8,6 @@ import org.apache.commons.lang.StringUtils;
 
 public class WebApplication {
 
-	private final ServiceFactory serviceFactory;
-
-	public WebApplication() {
-		serviceFactory = ServiceFactory.INSTANCE;
-	}
-
-	public static <T> T getService(Class<T> serviceClass) {
-		WebApplication webApplication = getBean("webApp");
-		return webApplication.serviceFactory.getBean(serviceClass);
-	}
-
 	/**
 	 * Returns JSF bean
 	 * 

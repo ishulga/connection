@@ -1,6 +1,7 @@
 package com.sh.connection.persistence.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -29,23 +30,21 @@ public class User implements HasId, Serializable {
 	@Size(max = 128)
 	private String login;
 
-	@NotNull
 	@Size(max = 128)
 	private String name;
 
 	private String password;
 
-	@NotNull
 	@Size(max = 256)
 	private String email;
 
 	@OneToMany(cascade = CascadeType.REMOVE)
 	@JoinColumn
-	private Set<Post> posts;
+	private Set<Post> posts = new HashSet<Post>();
 
 	@ManyToMany
 	@JoinTable(name = "user_subscription", inverseJoinColumns = { @JoinColumn(name = "subscription_id") })
-	private Set<User> subscriptions;
+	private Set<User> subscriptions = new HashSet<User>();
 
 	// TODO use ENUM here
 	private Boolean visible = true;

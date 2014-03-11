@@ -5,36 +5,42 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.sh.connection.ApplicationConfig;
 import com.sh.connection.persistence.model.Comment;
 import com.sh.connection.persistence.model.User;
-import com.sh.connection.service.CommentService;
-import com.sh.connection.service.ServiceException;
-import com.sh.connection.service.UserService;
-import com.sh.connection.util.ServiceFactory;
 
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@Transactional
+@ContextConfiguration(classes = ApplicationConfig.class)
 public class CommentServiceTest {
 
-	private CommentService commentService = ServiceFactory.INSTANCE
-	        .getBean(CommentService.class);
+	@Autowired
+	private CommentService commentService;
+	@Autowired
+	private UserService userService;
 
 	private static User user;
 
-	@BeforeClass
-	public static void createUser() throws ServiceException {
-		UserService userService = ServiceFactory.INSTANCE
-		        .getBean(UserService.class);
-
+	
+	public void createUser() throws ServiceException {
 		user = new User();
 		user.setLogin("user_with_comments_login");
 		user.setName("user_with_comments_name");
 		user.setPassword("user_with_comments_password");
 		user.setEmail("user_with_comments@example.com");
-		user = userService.register(user);
+		user = userService.save(user);
 	}
 
 	@Test
 	public void testCreateValidComment() throws ServiceException {
+		createUser();
 		Comment comment = createComment("Comment content.", "Comment title.");
 		Long commentId = commentService.create(user.getId(), comment);
 

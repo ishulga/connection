@@ -4,29 +4,34 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.sh.connection.ApplicationConfig;
 import com.sh.connection.persistence.model.Comment;
 import com.sh.connection.persistence.model.Post;
 import com.sh.connection.persistence.model.User;
-import com.sh.connection.service.CommentService;
-import com.sh.connection.service.PostService;
-import com.sh.connection.service.ServiceException;
-import com.sh.connection.service.UserService;
-import com.sh.connection.util.ServiceFactory;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@Transactional
+@ContextConfiguration(classes = ApplicationConfig.class)
 public class PostServiceTest {
 
-	private PostService postService = ServiceFactory.INSTANCE
-	        .getBean(PostService.class);
-	private UserService userService = ServiceFactory.INSTANCE
-	        .getBean(UserService.class);
-	private CommentService commentService = ServiceFactory.INSTANCE
-	        .getBean(CommentService.class);
+	@Autowired
+	UserService userService;
+	
+	@Autowired
+	private PostService postService;
+	@Autowired
+	private CommentService commentService;
 
 	@Test
 	public void testCreateValidPost() throws ServiceException {
 		Post origPost = createPost("Post content.", "Post title.");
-		Post persistedPost = postService.create(origPost);
+		Post persistedPost = postService.save(origPost);
 		assertEqualPosts(origPost, persistedPost);
 	}
 
@@ -35,7 +40,7 @@ public class PostServiceTest {
 		String postContent = "";
 		String postTitle = "Post title.";
 		Post post = createPost(postContent, postTitle);
-		postService.create(post);
+		postService.save(post);
 	}
 
 	@Test(expected = ServiceException.class)
@@ -43,16 +48,16 @@ public class PostServiceTest {
 		String postContent = "Post with default title.";
 		String postTitle = "";
 		Post post = createPost(postContent, postTitle);
-		postService.create(post);
+		postService.save(post);
 	}
 
 	@Test
 	public void testDeletePost() throws ServiceException {
 		Post post = createPost("Post content.", "Post title.");
-		Post persistedPost = postService.create(post);
+		Post persistedPost = postService.save(post);
 		postService.delete(persistedPost.getId());
 
-		assertNull(postService.get(persistedPost.getId()));
+		assertNull(postService.findOne(persistedPost.getId()));
 	}
 
 	@Test
@@ -60,13 +65,13 @@ public class PostServiceTest {
 		Post origPost = createPost("Original post content.",
 		        "Original Post title.");
 
-		origPost = postService.create(origPost);
+		origPost = postService.save(origPost);
 		origPost.setTitle("Updated post title.");
 		origPost.setPost("Updated post content.");
 
-		postService.update(origPost);
+		postService.save(origPost);
 
-		Post updatedPost = postService.get(origPost.getId());
+		Post updatedPost = postService.findOne(origPost.getId());
 
 		assertEqualPosts(origPost, updatedPost);
 	}
@@ -76,13 +81,13 @@ public class PostServiceTest {
 		Post origPost = createPost("Original post content.",
 		        "Original Post title.");
 
-		origPost = postService.create(origPost);
+		origPost = postService.save(origPost);
 		origPost.setTitle("");
 		origPost.setPost("Updated post content.");
 
-		postService.update(origPost);
+		postService.save(origPost);
 
-		Post updatedPost = postService.get(origPost.getId());
+		Post updatedPost = postService.findOne(origPost.getId());
 
 		assertEqualPosts(origPost, updatedPost);
 	}
@@ -90,7 +95,7 @@ public class PostServiceTest {
 	@Test
 	public void testGetUnexistingPost() {
 		Long postId = 6666666666L;
-		assertEquals(null, postService.get(postId));
+		assertEquals(null, postService.findOne(postId));
 	}
 
 	@Test
@@ -100,11 +105,11 @@ public class PostServiceTest {
 		user.setName("user_with_post_and_comment_name");
 		user.setPassword("user_with_post_and_comment_password");
 		user.setEmail("user_with_post_and_comment_email@example.com");
-		user = userService.register(user);
+		user = userService.save(user);
 
 		Post post = createPost("Post with comment content.",
 		        "Post with comment title.");
-		post = postService.create(post);
+		post = postService.save(post);
 		userService.addPost(user.getId(), post.getId());
 
 		String commentContent = "Comment content";

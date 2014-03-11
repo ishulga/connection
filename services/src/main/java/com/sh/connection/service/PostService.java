@@ -8,38 +8,37 @@ import java.util.Date;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.sh.connection.persistence.jpa.PostPL;
+import com.sh.connection.persistence.jpa.repository.PostRepository;
 import com.sh.connection.persistence.model.Comment;
 import com.sh.connection.persistence.model.Post;
-import com.sh.connection.util.ServiceFactory;
 
 public class PostService {
 
 	@Autowired
 	private CommentService commentService;
 	@Autowired
-	private PostPL postPL;
+	private PostRepository postPL;
 
-	public Post create(Post post) throws ServiceException {
+	public Post save(Post post) throws ServiceException {
 		validatePost(post);
 		Date date = new Date();
 		post.setCreatedAt(date);
 		post.setUpdatedAt(date);
-		return getPostWithComments(postPL.create(post));
+		return getPostWithComments(postPL.save(post).getId());
 	}
 
-	public Post get(Long postId) {
-		return postPL.getById(postId);
+	public Post findOne(Long postId) {
+		return postPL.findOne(postId);
 	}
 
 	public Post getPostWithComments(Long id) {
-		return postPL.getPostWithComments(id);
+		return postPL.findOne(id);
 	}
 
 	public void update(Post post) throws ServiceException {
 		validatePost(post);
 		post.setUpdatedAt(new Date());
-		postPL.merge(post);
+		postPL.save(post);
 	}
 
 	public void delete(Long postId) {
@@ -50,7 +49,7 @@ public class PostService {
 		Post post = getPostWithComments(postId);
 		Comment comment = commentService.get(commentId);
 		post.getComments().add(comment);
-		postPL.merge(post);
+		postPL.save(post);
 	}
 
 	private void validatePost(Post post) throws ServiceException {

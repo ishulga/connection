@@ -7,7 +7,7 @@ import java.util.Date;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.sh.connection.persistence.jpa.CommentPL;
+import com.sh.connection.persistence.jpa.repository.CommentRepository;
 import com.sh.connection.persistence.model.Comment;
 
 public class CommentService {
@@ -15,7 +15,7 @@ public class CommentService {
 	@Autowired
 	private UserService userService;
 	@Autowired
-	private CommentPL commentPL;
+	private CommentRepository commentPL;
 
 	public Long create(Long userId, Comment comment) throws ServiceException {
 		validateComment(comment);
@@ -23,17 +23,17 @@ public class CommentService {
 		comment.setCreatedAt(date);
 		comment.setUpdatedAt(date);
 		comment.setUser(userService.get(userId));
-		return commentPL.create(comment);
+		return commentPL.save(comment).getId();
 	}
 
 	public Comment get(Long commentId) {
-		return commentPL.getById(commentId);
+		return commentPL.findOne(commentId);
 	}
 
 	public void update(Comment comment) throws ServiceException {
 		validateComment(comment);
 		comment.setUpdatedAt(new Date());
-		commentPL.merge(comment);
+		commentPL.save(comment);
 	}
 
 	public void delete(Long commentId) {

@@ -40,6 +40,10 @@ public class Customer implements HasId, Serializable {
 
 	@Size(max = 256)
 	private String email;
+	
+	@OneToMany(cascade = CascadeType.REMOVE)
+	@JoinColumn
+	private Set<Post> posts;
 
 	// TODO use ENUM here
 	private Boolean visible = true;
@@ -52,6 +56,14 @@ public class Customer implements HasId, Serializable {
 	@Override
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public Set<Post> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(Set<Post> posts) {
+		this.posts = posts;
 	}
 
 	public String getLogin() {

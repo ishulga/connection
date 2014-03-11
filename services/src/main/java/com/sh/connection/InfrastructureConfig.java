@@ -29,6 +29,11 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import com.sh.connection.service.CommentService;
+import com.sh.connection.service.CustomerService;
+import com.sh.connection.service.PostService;
+import com.sh.connection.service.UserService;
+
 /**
  * Common infrastructure configuration class to setup a Spring container and infrastructure components like a
  * {@link DataSource}, a {@link EntityManagerFactory} and a {@link PlatformTransactionManager}. Will be used by the
@@ -80,5 +85,23 @@ public class InfrastructureConfig {
 		JpaTransactionManager txManager = new JpaTransactionManager();
 		txManager.setEntityManagerFactory(entityManagerFactory().getObject());
 		return txManager;
+	}
+	
+	@Bean
+	public CustomerService customerService() {
+		return new CustomerService();
+	}
+	@Bean
+	public PostService postService() {
+		return new PostService();
+	}
+	
+	@Bean
+	public UserService userService() {
+		return new UserService();
+	}
+	@Bean
+	public CommentService commentService() {
+		return new CommentService();
 	}
 }

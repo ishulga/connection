@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sh.connection.persistence.jpa;
+package com.sh.connection.persistence.jpa.repository;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.sh.connection.persistence.model.Customer;
+import com.sh.connection.persistence.model.Comment;
 
-public interface CustomerRepository extends CrudRepository<Customer, Long> {
+public interface CommentRepository extends CrudRepository<Comment, Long> {
 
 }

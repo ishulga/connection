@@ -7,7 +7,6 @@ import com.sh.connection.service.ServiceException;
 import com.sh.connection.service.UserService;
 
 public class WebContainer {
-	@Test
 	public void startWebContainer() throws Exception{
 		JettyContainer c = new JettyContainer();
 		c.join();

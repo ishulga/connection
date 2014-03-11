@@ -2,6 +2,7 @@ package com.sh.connection.persistence.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -33,7 +34,7 @@ public class Post implements HasId, Serializable {
 
 	@OneToMany(cascade = CascadeType.REMOVE)
 	@JoinColumn
-	private Set<Comment> comments;
+	private Set<Comment> comments = new HashSet<Comment>();
 
 	private Date updatedAt;
 

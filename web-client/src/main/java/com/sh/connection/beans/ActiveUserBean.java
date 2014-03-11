@@ -15,6 +15,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
@@ -26,8 +27,8 @@ import com.sh.connection.util.WebApplication;
 
 public class ActiveUserBean implements Serializable {
 	private static final long serialVersionUID = 402936075617772893L;
-	private UserService userService = WebApplication
-			.getService(UserService.class);
+	@Autowired
+	private UserService userService;
 	private User newUser = new User();
 	private String login;
 	private String password;
@@ -42,7 +43,7 @@ public class ActiveUserBean implements Serializable {
 
 	public String register() {
 		try {
-			user = userService.register(newUser);
+			user = userService.save(newUser);
 			return "PROFILE";
 		} catch (ServiceException e) {
 			WebApplication.error(e.getMessage());

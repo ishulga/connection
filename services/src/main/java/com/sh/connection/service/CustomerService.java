@@ -2,7 +2,7 @@ package com.sh.connection.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.sh.connection.persistence.jpa.CustomerRepository;
+import com.sh.connection.persistence.jpa.repository.CustomerRepository;
 import com.sh.connection.persistence.model.Customer;
 
 public class CustomerService {

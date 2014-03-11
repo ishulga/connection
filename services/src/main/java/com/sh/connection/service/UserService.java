@@ -12,13 +12,14 @@ import static com.sh.connection.service.Messages.LOGIN_EXISTS;
 import static com.sh.connection.service.Messages.SELF_SUBSCRIPTION;
 import static com.sh.connection.service.Messages.WRONG_CREDENTIALS;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.sh.connection.persistence.jpa.UserPL;
+import com.sh.connection.persistence.jpa.repository.UserRepository;
 import com.sh.connection.persistence.model.Post;
 import com.sh.connection.persistence.model.User;
 import com.sh.connection.util.InterfaceUtils;
@@ -26,44 +27,52 @@ import com.sh.connection.util.InterfaceUtils;
 public class UserService {
 
 	@Autowired
-	private UserPL userPL;
+	private UserRepository userPL;
 	@Autowired
 	private PostService postService;
 
-	public User register(User user) throws ServiceException {
+	public User save(User user) throws ServiceException {
 		validate(user);
-		return getEager(userPL.create(user));
+		return getEager(userPL.save(user).getId());
 	}
 
 	public User get(Long id) {
-		return userPL.getById(id);
+		return userPL.findOne(id);
 	}
 
 	public List<User> getAll() {
-		return userPL.getAll();
+		return toList(userPL.findAll());
+	}
+	
+	public List<User> toList(Iterable<User> iterable) {
+		List<User> list = new ArrayList<User>();
+		for (User user : iterable) {
+			list.add(user);
+		}
+		return list;
 	}
 
 	public List<User> getListEager() {
-		return userPL.getListEager();
+		return toList(userPL.findAll());
 	}
 
 	public User getEager(Long id) {
-		return userPL.getEager(id);
+		return userPL.findOne(id);
 	}
 
 	public void addPost(Long userId, Long postId) {
-		User user = userPL.getUserWithPosts(userId);
-		Post post = postService.get(postId);
+		User user = userPL.findOne(userId);
+		Post post = postService.findOne(postId);
 		user.getPosts().add(post);
-		userPL.merge(user);
+		userPL.save(user);
 	}
 
 	public User getUserWithPosts(Long id) {
-		return userPL.getUserWithPosts(id);
+		return userPL.findOne(id);
 	}
 
 	public User getUserWithSubscriptions(Long id) {
-		return userPL.getUserWithSubscriptions(id);
+		return userPL.findOne(id);
 	}
 
 	public void subscribeTo(Long subscriberUserId, Long subscriptionUserId)
@@ -78,7 +87,7 @@ public class UserService {
 		}
 		User subscriptionUser = get(subscriptionUserId);
 		subscriberUser.getSubscriptions().add(subscriptionUser);
-		userPL.merge(subscriberUser);
+		userPL.save(subscriberUser);
 	}
 
 	public void unsubscribeFrom(Long subscriberUserId, Long toUnsubscribeUserId)
@@ -90,12 +99,12 @@ public class UserService {
 		}
 		User subscriptionUser = get(toUnsubscribeUserId);
 		subscriberUser.getSubscriptions().remove(subscriptionUser);
-		userPL.merge(subscriberUser);
+		userPL.save(subscriberUser);
 
 	}
 
 	public User login(String login, String password) throws ServiceException {
-		User user = userPL.getByLogin(login);
+		User user = userPL.findByLogin(login);
 		if (user != null && user.getPassword().equals(password.trim())) {
 			return getEager(user.getId());
 		} else {
@@ -107,7 +116,7 @@ public class UserService {
 		if (StringUtils.isEmpty(user.getLogin())) {
 			throw new ServiceException(EMPTY_LOGIN);
 		}
-		if (userPL.getByLogin(user.getLogin()) != null) {
+		if (userPL.findByLogin(user.getLogin()) != null) {
 			throw new ServiceException(LOGIN_EXISTS);
 		}
 		if (StringUtils.isEmpty(user.getEmail())) {
@@ -116,7 +125,7 @@ public class UserService {
 		if (!EmailValidator.getInstance().isValid(user.getEmail())) {
 			throw new ServiceException(INVALID_EMAIL);
 		}
-		if (userPL.getByEmail(user.getEmail()) != null) {
+		if (userPL.findByEmail(user.getEmail()) != null) {
 			throw new ServiceException(EMAIL_EXISTS);
 		}
 		if (StringUtils.isEmpty(user.getName())) {
@@ -133,6 +142,6 @@ public class UserService {
 	}
 
 	public void changeVisibility(User user) {
-		userPL.merge(user);
+		userPL.save(user);
 	}
 }

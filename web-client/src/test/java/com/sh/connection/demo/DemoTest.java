@@ -19,10 +19,12 @@ import static net.sourceforge.jwebunit.junit.JWebUnit.setTextField;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.sh.connection.util.JettyContainer;
 
+@Ignore
 public class DemoTest {
 
 	private static final String LOGOUT_BTN_ID = "logoutForm:logoutBtn";
