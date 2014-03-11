@@ -4,6 +4,7 @@ out.txt
 target
 .classpath
 .project
+*/dbs
 .settings
 .git*
 !.gitignore
