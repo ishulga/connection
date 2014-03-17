@@ -1,70 +1,33 @@
 package com.sh.connection.persistence.model.mongo;
 
-import java.io.Serializable;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.sh.connection.persistence.model.HasId;
 import com.sh.connection.persistence.model.Post;
-import com.sh.connection.persistence.model.User;
 
-@Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = { "login", "email" }))
-public class Customer implements HasId, Serializable {
-	private static final long serialVersionUID = 8046792734615717626L;
+@Document
+public class Customer extends AbstractDocument {
 
-	@Id
-	@GeneratedValue
-	private Long id;
-
-	@Size(max = 128)
 	private String login;
 
-	@NotNull
-	@Size(max = 128)
 	private String name;
 
 	private String password;
 
-	@Size(max = 256)
 	private String email;
 	
-	@OneToMany(cascade = CascadeType.REMOVE)
-	@JoinColumn
-	private Set<Post> posts;
+//	private Set<Post> posts;
 
-	// TODO use ENUM here
 	private Boolean visible = true;
 
-	@Override
-	public Long getId() {
-		return id;
-	}
-
-	@Override
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
-	public Set<Post> getPosts() {
-		return posts;
-	}
-
-	public void setPosts(Set<Post> posts) {
-		this.posts = posts;
-	}
+//	public Set<Post> getPosts() {
+//		return posts;
+//	}
+//
+//	public void setPosts(Set<Post> posts) {
+//		this.posts = posts;
+//	}
 
 	public String getLogin() {
 		return login;
