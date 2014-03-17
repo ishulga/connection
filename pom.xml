@@ -11,7 +11,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<generated.sources.folder>${project.build.directory}/generated-sources</generated.sources.folder>
 		<!-- dependency versions -->
-		<spring.version>3.2.1.RELEASE</spring.version>
+		<spring.version>3.2.8.RELEASE</spring.version>
 		<hibernate.version>3.6.5.Final</hibernate.version>
 	</properties>
 

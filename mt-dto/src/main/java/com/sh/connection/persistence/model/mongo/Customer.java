@@ -2,6 +2,7 @@ package com.sh.connection.persistence.model.mongo;
 
 import java.util.Set;
 
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.sh.connection.persistence.model.Post;
@@ -17,17 +18,37 @@ public class Customer extends AbstractDocument {
 
 	private String email;
 	
-//	private Set<Post> posts;
+	@DBRef
+	private Set<Review> reviews;
+	
+	@DBRef
+	private Review currentReview;
 
 	private Boolean visible = true;
+	
+	public Review getCurrentReview() {
+		return currentReview;
+	}
 
-//	public Set<Post> getPosts() {
-//		return posts;
-//	}
-//
-//	public void setPosts(Set<Post> posts) {
-//		this.posts = posts;
-//	}
+	public void setCurrentReview(Review currentReview) {
+		this.currentReview = currentReview;
+	}
+
+	public Boolean getVisible() {
+		return visible;
+	}
+
+	public void setVisible(Boolean visible) {
+		this.visible = visible;
+	}
+
+	public Set<Review> getReviews() {
+		return reviews;
+	}
+
+	public void setReviews(Set<Review> posts) {
+		this.reviews = posts;
+	}
 
 	public String getLogin() {
 		return login;
