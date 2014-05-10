@@ -1,10 +1,9 @@
 package com.sh.connection.repos;
 
-import java.math.BigInteger;
-
+import com.sh.connection.persistence.model.mongo.Review;
 import org.springframework.data.repository.CrudRepository;
 
-import com.sh.connection.persistence.model.mongo.Review;
+import java.math.BigInteger;
 
 public interface ReviewRepository extends CrudRepository<Review, BigInteger> {
 

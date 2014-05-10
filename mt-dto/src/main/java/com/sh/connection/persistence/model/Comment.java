@@ -1,96 +1,90 @@
 package com.sh.connection.persistence.model;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
-
 @Entity
 public class Comment implements HasId, Serializable {
-	private static final long serialVersionUID = 2528140579425021435L;
-  
-	@Id
-	@GeneratedValue
-	private Long id;
+    private static final long serialVersionUID = 2528140579425021435L;
 
-	@NotNull
-	@Column(length = 65535)
-	private String comment;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-	@Column(length = 128)
-	private String title;
+    @NotNull
+    @Column(length = 65535)
+    private String comment;
 
-	@ManyToOne
-	@JoinColumn
-	private User user;
+    @Column(length = 128)
+    private String title;
 
-	private Date createdAt;
+    @ManyToOne
+    @JoinColumn
+    private User user;
 
-	private Date updatedAt;
+    private Date createdAt;
 
-	public Comment() {
-	}
+    private Date updatedAt;
 
-	@Override
-	public Long getId() {
-		return id;
-	}
+    public Comment() {
+    }
 
-	public String getComment() {
-		return comment;
-	}
+    @Override
+    public Long getId() {
+        return id;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public String getComment() {
+        return comment;
+    }
 
-	public User getUser() {
-		return user;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public Date getCreatedAt() {
-		return createdAt;
-	}
+    public User getUser() {
+        return user;
+    }
 
-	public Date getUpdatedAt() {
-		return updatedAt;
-	}
+    public Date getCreatedAt() {
+        return createdAt;
+    }
 
-	@Override
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
 
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-	public void setUpdatedAt(Date updatedAt) {
-		this.updatedAt = updatedAt;
-	}
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
 
-	@Override
-	public String toString() {
-		return "Comment [id=" + id + ", comment=" + comment + ", title="
-		        + title + ", userId=" + user.getId() + ", createdAt="
-		        + createdAt + ", updatedAt=" + updatedAt + "]";
-	}
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "Comment [id=" + id + ", comment=" + comment + ", title="
+                + title + ", userId=" + user.getId() + ", createdAt="
+                + createdAt + ", updatedAt=" + updatedAt + "]";
+    }
 }

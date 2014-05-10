@@ -15,10 +15,9 @@
  */
 package com.sh.connection.persistence.jpa.repository;
 
+import com.sh.connection.persistence.model.Message;
 import org.springframework.data.repository.CrudRepository;
 
-import com.sh.connection.persistence.model.Customer;
-
-public interface CustomerRepository extends CrudRepository<Customer, Long> {
+public interface MessageRepository extends CrudRepository<Message, Long> {
 
 }

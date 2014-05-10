@@ -15,9 +15,8 @@
  */
 package com.sh.connection.persistence.jpa.repository;
 
-import org.springframework.data.repository.CrudRepository;
-
 import com.sh.connection.persistence.model.Comment;
+import org.springframework.data.repository.CrudRepository;
 
 public interface CommentRepository extends CrudRepository<Comment, Long> {
 

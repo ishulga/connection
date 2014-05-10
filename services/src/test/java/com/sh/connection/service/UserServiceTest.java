@@ -1,11 +1,8 @@
 package com.sh.connection.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-
+import com.sh.connection.ApplicationConfig;
+import com.sh.connection.persistence.model.Message;
+import com.sh.connection.persistence.model.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,238 +10,224 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sh.connection.ApplicationConfig;
-import com.sh.connection.persistence.model.Post;
-import com.sh.connection.persistence.model.User;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
 @ContextConfiguration(classes = ApplicationConfig.class)
 public class UserServiceTest {
 
-	@Autowired
-	UserService userService;
-	
-	@Autowired
-	private PostService postService;
+    @Autowired
+    UserService userService;
 
-	@Test
-	public void testsaveValidUser() throws ServiceException {
-		User user = createUser("valid_user_login", "valid_user_name",
-		        "valid_user_password", "valid_user_email@example.com");
+    @Autowired
+    private MessageService messageService;
 
-		User saveedUser = userService.save(user);
+    @Test
+    public void testsaveValidUser() throws ServiceException {
+        User user = createUser("valid_user_login", "valid_user_name",
+                "valid_user_password", "valid_user_email@example.com");
+        User savedUser = userService.save(user);
+        assertEqualUsers(user, savedUser);
+    }
 
-		assertEqualUsers(user, saveedUser);
-	}
+    @Test(expected = ServiceException.class)
+    public void testSaveUserWithExistingLogin() throws ServiceException {
+        String existing_user_login = "existing_user_login";
+        User userOne = createUser(existing_user_login, "existing_user_name",
+                "existing_user_password", "existing_user_email@example.com");
+        User userTwo = createUser(existing_user_login, "existing_user_name",
+                "existing_user_password", "another_user_email@example.com");
 
-	@Test
-	public void testGetUnexistingUserById() throws ServiceException {
-		Long userId = 666666666L;
-		assertNull(userService.get(userId));
-	}
+        userService.save(userOne);
+        userService.save(userTwo);
+    }
 
-	@Test(expected = ServiceException.class)
-	public void testsaveUserWithExistingLogin() throws ServiceException {
-		User userOne = createUser("existing_user_login", "existing_user_name",
-		        "existing_user_password", "existing_user_email@example.com");
-		User userTwo = createUser("existing_user_login", "existing_user_name",
-		        "existing_user_password", "another_user_email@example.com");
+    @Test(expected = ServiceException.class)
+    public void testSaveUserWithExistingEmail() throws ServiceException {
+        String user_with_existing_email = "user_with_existing_email_name";
+        User userOne = createUser("user_with_existing_email_login",
+                user_with_existing_email,
+                "user_with_existing_email_password",
+                "user_with_existing_email_email@example.com");
+        User userTwo = createUser("second_user_with_existing_email_login",
+                "second_user_with_existing_email_name",
+                "second_user_with_existing_email_password",
+                "user_with_existing_email_email@example.com");
 
-		userService.save(userOne);
-		userService.save(userTwo);
-	}
+        userService.save(userOne);
+        userService.save(userTwo);
+    }
 
-	@Test(expected = ServiceException.class)
-	public void testsaveUserWithExistingEmail() throws ServiceException {
-		User userOne = createUser("user_with_existing_email_login",
-		        "user_with_existing_email_name",
-		        "user_with_existing_email_password",
-		        "user_with_existing_email_email@example.com");
-		User userTwo = createUser("second_user_with_existing_email_login",
-		        "second_user_with_existing_email_name",
-		        "second_user_with_existing_email_password",
-		        "user_with_existing_email_email@example.com");
+    @Test(expected = ServiceException.class)
+    public void testsaveUserWithEmptyLogin() throws ServiceException {
+        String login = "";
+        String name = "user_with_empty_login_name";
+        String password = "user_with_empty_login_password";
+        String email = "user_with_empty_login_email@example.com";
+        User user = createUser(login, name, password, email);
 
-		userService.save(userOne);
-		userService.save(userTwo);
-	}
+        userService.save(user);
+    }
 
-	@Test(expected = ServiceException.class)
-	public void testsaveUserWithEmptyLogin() throws ServiceException {
-		String login = "";
-		String name = "user_with_empty_login_name";
-		String password = "user_with_empty_login_password";
-		String email = "user_with_empty_login_email@example.com";
-		User user = createUser(login, name, password, email);
+    @Test(expected = ServiceException.class)
+    public void testsaveUserWithEmptyPassword() throws ServiceException {
+        String login = "user_with_empty_password_login";
+        String name = "user_with_empty_password_name";
+        String password = "";
+        String email = "user_with_empty_password_email@example.com";
+        User user = createUser(login, name, password, email);
 
-		userService.save(user);
-	}
+        userService.save(user);
+    }
 
-	@Test(expected = ServiceException.class)
-	public void testsaveUserWithEmptyPassword() throws ServiceException {
-		String login = "user_with_empty_password_login";
-		String name = "user_with_empty_password_name";
-		String password = "";
-		String email = "user_with_empty_password_email@example.com";
-		User user = createUser(login, name, password, email);
+    @Test(expected = ServiceException.class)
+    public void testsaveUserWithEmptyName() throws ServiceException {
+        String name = "";
+        User user = createUser("user_with_empty_name_login", name,
+                "user_with_empty_name_password",
+                "user_with_empty_name_email@example.com");
 
-		userService.save(user);
-	}
+        userService.save(user);
+    }
 
-	@Test(expected = ServiceException.class)
-	public void testsaveUserWithEmptyName() throws ServiceException {
-		String name = "";
-		User user = createUser("user_with_empty_name_login", name,
-		        "user_with_empty_name_password",
-		        "user_with_empty_name_email@example.com");
+    @Test(expected = ServiceException.class)
+    public void testsaveUserWithInvalidEmail() throws ServiceException {
+        User user = createUser("user_with_invalid_email_login",
+                "user_with_invalid_email_name",
+                "user_with_invalid_email_password",
+                "user_with_@_invalid_email@example.com");
 
-		userService.save(user);
-	}
+        userService.save(user);
+    }
 
-	@Test(expected = ServiceException.class)
-	public void testsaveUserWithInvalidEmail() throws ServiceException {
-		User user = createUser("user_with_invalid_email_login",
-		        "user_with_invalid_email_name",
-		        "user_with_invalid_email_password",
-		        "user_with_@_invalid_email@example.com");
+    @Test
+    public void testUsersListing() throws ServiceException {
+        User userOne = createUser("one_login", "one_name", "one_password",
+                "one@example.com");
+        User userTwo = createUser("two_login", "two_name", "two_password",
+                "two@example.com");
 
-		userService.save(user);
-	}
+        userService.save(userOne);
+        userService.save(userTwo);
 
-	@Test
-	public void testUsersListing() throws ServiceException {
-		User userOne = createUser("one_login", "one_name", "one_password",
-		        "one@example.com");
-		User userTwo = createUser("two_login", "two_name", "two_password",
-		        "two@example.com");
+        List<User> userList = userService.getAll();
+        assertTrue(userList.size() >= 2);
+    }
 
-		userService.save(userOne);
-		userService.save(userTwo);
+    @Test
+    public void testAddValidPost() throws ServiceException {
+        User user = createUser("user_with_post_login", "user_with_post_name",
+                "user_with_post_password", "user_with_post_email@example.com");
 
-		List<User> userList = userService.getAll();
-		assertTrue(userList.size() >= 2);
-	}
+        User saveedUser = userService.save(user);
 
-	@Test
-	public void testAddValidPost() throws ServiceException {
-		User user = createUser("user_with_post_login", "user_with_post_name",
-		        "user_with_post_password", "user_with_post_email@example.com");
+        String postContent = "Post content.";
+        String postTitle = "Post title.";
+        Message message = new Message();
+        message.setText(postContent);
+        message.setTitle(postTitle);
 
-		User saveedUser = userService.save(user);
+        message = messageService.save(message);
+        userService.addMessage(saveedUser.getId(), message.getId());
 
-		String postContent = "Post content.";
-		String postTitle = "Post title.";
-		Post post = new Post();
-		post.setPost(postContent);
-		post.setTitle(postTitle);
+        assertEquals(1, user.getMessages().size());
+        message = user.getMessages().iterator().next();
+        assertEquals(postContent, message.getText());
+        assertEquals(postTitle, message.getTitle());
+    }
 
-		post = postService.save(post);
-		userService.addPost(saveedUser.getId(), post.getId());
+    @Test
+    public void testLoginWithRightCredentials() throws ServiceException {
+        String password = "test_password";
+        String login = "test_login";
+        User user = createUser(login, "test_name", password,
+                "test_login@example.com");
+        userService.save(user);
 
-		user = userService.getUserWithPosts(saveedUser.getId());
+        User loggedInUser = userService.login(login, password);
 
-		assertEquals(1, user.getPosts().size());
-		post = user.getPosts().iterator().next();
-		assertEquals(postContent, post.getPost());
-		assertEquals(postTitle, post.getTitle());
-	}
+        assertEqualUsers(user, loggedInUser);
+    }
 
-	@Test
-	public void testSubscribe() throws ServiceException {
-		User subscriberUser = createUser("subscriber_login", "subscriber_name",
-		        "subscriber_password", "subscriber_email@example.com");
-		subscriberUser = userService.save(subscriberUser);
+    @Test(expected = ServiceException.class)
+    public void testLoginWithWrongCredentials() throws ServiceException {
+        String password = "test_wrong_password";
+        String login = "test_wrong_login";
+        User user = createUser(login, "test_wrong_name", password,
+                "test_wrong_login@example.com");
+        userService.save(user);
 
-		User subscriptionUser = createUser("subscription_login",
-		        "subscription_name", "subscription_password",
-		        "subscription_email@example.com");
-		subscriptionUser = userService.save(subscriptionUser);
+        userService.login(login, "another password");
+    }
 
-		userService.subscribeTo(subscriberUser.getId(),
-		        subscriptionUser.getId());
+    @Test
+    public void testConversations() throws ServiceException {
+        User userJack = createUser("login", "Jack", "pass", "jack@googole.com");
+        User userBen = createUser("login2", "Ben", "pass", "ben@googole.com");
+        Message messageJack = new Message("JackTitle", "JackText");
+        Message messageBen = new Message("BenTitle", "BenText");
 
-		subscriberUser = userService.getUserWithSubscriptions(subscriberUser
-		        .getId());
+        userJack.setMessages(new HashSet<Message>(Arrays.asList(messageJack)));
+        userJack = userService.save(userJack);
 
-		assertEquals(1, subscriberUser.getSubscriptions().size());
-		User persistedSubscriptionUser = subscriberUser.getSubscriptions()
-		        .iterator().next();
-		assertEquals(subscriptionUser.getId(),
-		        persistedSubscriptionUser.getId());
-	}
+        userBen.setMessages(new HashSet<Message>(Arrays.asList(messageBen)));
+        userBen = userService.save(userBen);
 
-	@Test
-	public void testUnsubscribe() throws ServiceException {
-		User unsubscriberUser = createUser("unsubscriber_login",
-		        "unsubscriber_name", "unsubscriber_password",
-		        "unsubscriber_email@example.com");
-		unsubscriberUser = userService.save(unsubscriberUser);
+        userJack.setConversations(new HashSet<User>(Arrays.asList(userBen)));
+        User saved = userService.update(userJack);
+    }
 
-		User unsubscriptionUser = createUser("unsubscription_login",
-		        "unsubscription_name", "unsubscription_password",
-		        "unsubscription_email@example.com");
-		unsubscriptionUser = userService.save(unsubscriptionUser);
+    @Test
+    public void testSendMessage() throws ServiceException {
+        User userJack = createUser("login0", "Jack", "pass", "jack@googole1.com");
+        User userBen = createUser("login2", "Ben", "pass", "ben@googole1.com");
+        Message messageJack = new Message("JackTitle", "JackText");
+        Message messageBen = new Message("BenTitle", "BenText");
+        userJack = userService.save(userJack);
+        userBen = userService.save(userBen);
 
-		userService.subscribeTo(unsubscriberUser.getId(),
-		        unsubscriptionUser.getId());
+        userService.sendMessage(userJack, userBen.getId(), messageJack);
 
-		userService.unsubscribeFrom(unsubscriberUser.getId(),
-		        unsubscriptionUser.getId());
+        userJack = userService.get(userJack.getId());
+        assertEquals(1, userJack.getConversations().size());
+        assertEquals(1, userJack.getMessages().size());
+        assertEquals("Ben", userJack.getConversations().iterator().next().getName());
+        assertEquals("JackTitle", userJack.getConversations().iterator().next().getMessages().iterator().next().getTitle());
+        assertEquals("JackTitle", userJack.getMessages().iterator().next().getTitle());
 
-		unsubscriberUser = userService
-		        .getUserWithSubscriptions(unsubscriberUser.getId());
+        //Send second message
+        userService.sendMessage(userBen, userJack.getId(), messageBen);
+        userJack = userService.get(userJack.getId());
+        userJack = userService.get(userJack.getId());
 
-		assertEquals(0, unsubscriberUser.getSubscriptions().size());
-	}
+        assertEquals(1, userJack.getConversations().size());
+        assertEquals(1, userBen.getConversations().size());
 
-	@Test
-	public void testGetAllWithPostsCount() {
-		List<User> users = userService.getListEager();
-		for (User user : users) {
-			user.getPosts().size();
-			user.getSubscriptions().size();
-		}
-	}
+        assertEquals(2, userJack.getMessages().size());
+        assertEquals(2, userBen.getMessages().size());
 
-	@Test
-	public void testLoginWithRightCredentials() throws ServiceException {
-		String password = "test_password";
-		String login = "test_login";
-		User user = createUser(login, "test_name", password,
-		        "test_login@example.com");
-		userService.save(user);
+    }
 
-		User loggedInUser = userService.login(login, password);
+    private void assertEqualUsers(User user, User persistedUser) {
+        assertEquals(user.getLogin(), persistedUser.getLogin());
+        assertEquals(user.getName(), persistedUser.getName());
+        assertEquals(user.getEmail(), persistedUser.getEmail());
+        assertEquals(user.getPassword(), persistedUser.getPassword());
+    }
 
-		assertEqualUsers(user, loggedInUser);
-	}
-
-	@Test(expected = ServiceException.class)
-	public void testLoginWithWrongCredentials() throws ServiceException {
-		String password = "test_wrong_password";
-		String login = "test_wrong_login";
-		User user = createUser(login, "test_wrong_name", password,
-		        "test_wrong_login@example.com");
-		userService.save(user);
-
-		userService.login(login, "another password");
-	}
-
-	private void assertEqualUsers(User user, User persistedUser) {
-		assertEquals(user.getLogin(), persistedUser.getLogin());
-		assertEquals(user.getName(), persistedUser.getName());
-		assertEquals(user.getEmail(), persistedUser.getEmail());
-		assertEquals(user.getPassword(), persistedUser.getPassword());
-	}
-
-	private User createUser(String login, String name, String password,
-	        String email) {
-		User user = new User();
-		user.setName(name);
-		user.setLogin(login);
-		user.setEmail(email);
-		user.setPassword(password);
-		return user;
-	}
+    private User createUser(String login, String name, String password,
+                            String email) {
+        User user = new User();
+        user.setName(name);
+        user.setLogin(login);
+        user.setEmail(email);
+        user.setPassword(password);
+        return user;
+    }
 }

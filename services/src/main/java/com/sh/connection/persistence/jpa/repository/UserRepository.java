@@ -15,13 +15,12 @@
  */
 package com.sh.connection.persistence.jpa.repository;
 
-import org.springframework.data.repository.CrudRepository;
-
 import com.sh.connection.persistence.model.User;
+import org.springframework.data.repository.CrudRepository;
 
 public interface UserRepository extends CrudRepository<User, Long> {
 
-	public User findByLogin(String login);
-	
-	public User findByEmail(String email);
+    public User findByLogin(String login);
+
+    public User findByEmail(String email);
 }
