@@ -1,28 +1,22 @@
 package com.sh.connection.service;
 
-import com.sh.connection.ApplicationConfig;
 import com.sh.connection.persistence.model.Message;
 import com.sh.connection.persistence.model.User;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@Transactional
-//@ContextConfiguration(classes = ApplicationConfig.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-public class UserServiceTest {
-
+/**
+ * Created by ievgen on 5/10/2014.
+ */
+public class UserServiceAbstract {
     @Autowired
     UserService userService;
 
@@ -39,7 +33,7 @@ public class UserServiceTest {
 
     @Test(expected = ServiceException.class)
     public void testSaveUserWithExistingLogin() throws ServiceException {
-        String existing_user_login = "existing_user_login";
+        String existing_user_login = "existing_user_login1";
         User userOne = createUser(existing_user_login, "existing_user_name",
                 "existing_user_password", "existing_user_email@example.com");
         User userTwo = createUser(existing_user_login, "existing_user_name",
@@ -123,7 +117,7 @@ public class UserServiceTest {
 
     @Test
     public void testAddValidPost() throws ServiceException {
-        User user = createUser("user_with_post_login", "user_with_post_name",
+        User user = createUser("user_with_post_login2", "user_with_post_name",
                 "user_with_post_password", "user_with_post_email@example.com");
 
         User saveedUser = userService.save(user);

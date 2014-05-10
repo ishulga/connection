@@ -1,5 +1,6 @@
 package com.sh.connection.service;
 
+import com.sh.connection.persistence.interfaces.MessageDao;
 import com.sh.connection.persistence.jpa.repository.MessageRepository;
 import com.sh.connection.persistence.model.Message;
 import org.apache.commons.lang.StringUtils;
@@ -13,7 +14,7 @@ import static com.sh.connection.service.Messages.EMPTY_POST_TITLE;
 public class MessageService {
 
     @Autowired
-    private MessageRepository messagePL;
+    private MessageDao messagePL;
 
     public Message save(Message message) throws ServiceException {
         validatePost(message);

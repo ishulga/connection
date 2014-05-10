@@ -5,6 +5,8 @@ import com.sh.connection.persistence.model.Message;
 import com.sh.connection.persistence.model.User;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -13,7 +15,7 @@ import java.util.List;
 import static com.sh.connection.service.Messages.*;
 
 public class UserService {
-
+    Logger LOG = LoggerFactory.getLogger(UserService.class);
     @Autowired
     private UserRepository userPL;
     @Autowired
@@ -44,7 +46,8 @@ public class UserService {
     }
 
     public List<User> getAll() {
-        return toList(userPL.findAll());
+        Iterable all = userPL.findAll();
+        return toList(all);
     }
 
     public List<User> toList(Iterable<User> iterable) {
@@ -76,6 +79,7 @@ public class UserService {
             throw new ServiceException(EMPTY_LOGIN);
         }
         if (userPL.findByLogin(user.getLogin()) != null) {
+            LOG.error("User with login " + user.getLogin() + " exists");
             throw new ServiceException(LOGIN_EXISTS);
         }
         if (StringUtils.isEmpty(user.getEmail())) {

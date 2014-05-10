@@ -15,9 +15,10 @@
  */
 package com.sh.connection.persistence.jpa.repository;
 
+import com.sh.connection.persistence.interfaces.MessageDao;
 import com.sh.connection.persistence.model.Message;
 import org.springframework.data.repository.CrudRepository;
 
-public interface MessageRepository extends CrudRepository<Message, Long> {
+public interface MessageRepository extends MessageDao, CrudRepository<Message, Long> {
 
 }
