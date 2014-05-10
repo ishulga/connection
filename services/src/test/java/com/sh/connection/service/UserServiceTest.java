@@ -19,7 +19,8 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-@ContextConfiguration(classes = ApplicationConfig.class)
+//@ContextConfiguration(classes = ApplicationConfig.class)
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 public class UserServiceTest {
 
     @Autowired
