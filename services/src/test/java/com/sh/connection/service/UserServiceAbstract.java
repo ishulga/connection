@@ -4,11 +4,11 @@ import com.sh.connection.persistence.model.Message;
 import com.sh.connection.persistence.model.User;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -16,12 +16,14 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by ievgen on 5/10/2014.
  */
-public class UserServiceAbstract {
-    @Autowired
-    UserService userService;
+@Transactional
+public abstract class UserServiceAbstract {
 
     @Autowired
-    private MessageService messageService;
+    protected UserService userService;
+
+    @Autowired
+    protected MessageService messageService;
 
     @Test
     public void testsaveValidUser() throws ServiceException {
@@ -116,7 +118,7 @@ public class UserServiceAbstract {
     }
 
     @Test
-    public void testAddValidPost() throws ServiceException {
+    public void testAddMessage() throws ServiceException {
         User user = createUser("user_with_post_login2", "user_with_post_name",
                 "user_with_post_password", "user_with_post_email@example.com");
 

@@ -14,7 +14,4 @@ public interface Messages {
     String LOGIN_EXISTS = "User with such login already exists.";
     String EMPTY_LOGIN = "User login is empty.";
     String WRONG_CREDENTIALS = "Wrong credentials.";
-    String DID_NOT_SUBSCRIBED = "You can't unsubscribe from this user - you haven't subscribed for it.";
-    String ALREADY_SUBSCRIBED = "You already subscribed to this user.";
-    String SELF_SUBSCRIPTION = "You can't subscribe to yourself.";
 }

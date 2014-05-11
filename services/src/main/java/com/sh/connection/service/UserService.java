@@ -1,5 +1,6 @@
 package com.sh.connection.service;
 
+import com.sh.connection.persistence.interfaces.UserDao;
 import com.sh.connection.persistence.jpa.repository.UserRepository;
 import com.sh.connection.persistence.model.Message;
 import com.sh.connection.persistence.model.User;
@@ -8,16 +9,18 @@ import org.apache.commons.validator.routines.EmailValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.sh.connection.service.Messages.*;
 
+@Service
 public class UserService {
-    Logger LOG = LoggerFactory.getLogger(UserService.class);
+    private final Logger LOG = LoggerFactory.getLogger(UserService.class);
     @Autowired
-    private UserRepository userPL;
+    private UserDao userPL;
     @Autowired
     private MessageService messageService;
 

@@ -5,6 +5,7 @@ import com.sh.connection.persistence.model.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,12 +15,12 @@ import static org.junit.Assert.assertNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-//@ContextConfiguration(classes = ApplicationConfig.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+@ActiveProfiles(value = "jpa-repo")
 public class MessageServiceTest {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
     private MessageService messageService;

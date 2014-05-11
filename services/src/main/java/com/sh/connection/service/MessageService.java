@@ -5,12 +5,14 @@ import com.sh.connection.persistence.jpa.repository.MessageRepository;
 import com.sh.connection.persistence.model.Message;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
 import static com.sh.connection.service.Messages.EMPTY_POST_CONTENT;
 import static com.sh.connection.service.Messages.EMPTY_POST_TITLE;
 
+@Service
 public class MessageService {
 
     @Autowired

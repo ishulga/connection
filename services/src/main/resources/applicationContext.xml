@@ -12,10 +12,9 @@
 
     <context:annotation-config/>
     <tx:annotation-driven/>
-
     <context:property-placeholder location="classpath:database.properties"/>
 
-
+    <beans profile="jpa,jpa-repo">
         <bean id="userService" class="com.sh.connection.service.UserService"/>
         <bean id="messageService" class="com.sh.connection.service.MessageService"/>
 
@@ -31,8 +30,6 @@
             <property name="password" value="${jdbc.password}"/>
         </bean>
 
-        <jpa:repositories base-package="com.sh.connection" entity-manager-factory-ref="entityManager"/>
-
         <bean id="entityManager" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
             <property name="packagesToScan" value="com.sh.connection"/>
             <property name="dataSource" ref="dataSource"/>
@@ -44,27 +41,14 @@
                 </bean>
             </property>
         </bean>
+    </beans>
 
-    <!--beans profile="jpa">
-        <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
-            <property name="dataSource" ref="dataSource"/>
-            <property name="annotatedClasses">
-                <list>
-                    <value>com.sh.connection.persistence.model.User</value>
-                    <value>com.sh.connection.persistence.model.Message</value>
-                </list>
-            </property>
-            <property name="hibernateProperties">
-                <props>
-                    <prop key="show_sql">true</prop>
-                    <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
-                    <prop key="hibernate.dialect">${hibernate.dialect}</prop>
-                    <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
-                </props>
-            </property>
-        </bean>
+    <beans profile="jpa">
+        <context:component-scan base-package="com.sh.connection.persistence.jpa.pl"/>
+    </beans>
 
-    </beans-->
-
+    <beans profile="jpa-repo">
+        <jpa:repositories base-package="com.sh.connection.persistence.jpa.repository" entity-manager-factory-ref="entityManager"/>
+    </beans>
 
 </beans>

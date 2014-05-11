@@ -15,10 +15,11 @@
  */
 package com.sh.connection.persistence.jpa.repository;
 
+import com.sh.connection.persistence.interfaces.UserDao;
 import com.sh.connection.persistence.model.User;
 import org.springframework.data.repository.CrudRepository;
 
-public interface UserRepository extends CrudRepository<User, Long> {
+public interface UserRepository extends UserDao, CrudRepository<User, Long> {
 
     public User findByLogin(String login);
 
