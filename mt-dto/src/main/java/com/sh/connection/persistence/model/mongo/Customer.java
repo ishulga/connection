@@ -9,20 +9,15 @@ import java.util.Set;
 public class Customer extends AbstractDocument {
 
     private String login;
-
     private String name;
-
     private String password;
-
     private String email;
-
     @DBRef
     private Set<Review> reviews;
-
     @DBRef
     private Review currentReview;
-
     private Boolean visible = true;
+
 
     public Review getCurrentReview() {
         return currentReview;
