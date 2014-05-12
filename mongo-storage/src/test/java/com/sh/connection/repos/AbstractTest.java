@@ -11,7 +11,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {ApplicationConfig.class})
+//@ContextConfiguration(classes = {ApplicationConfig.class})
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 public abstract class AbstractTest {
 
     @Autowired
@@ -28,6 +29,15 @@ public abstract class AbstractTest {
         cust1.put("password", "testpassword");
         cust1.put("name", "testname");
         cust1.put("email", "testemail");
+
+        DBObject review1 = new BasicDBObject();
+        review1.put("title", "book review");
+        review1.put("positive", "false");
+
+        BasicDBList reviews = new BasicDBList();
+        reviews.add(review1);
+
+        cust1.put("reviews", reviews);
         collection.insert(cust1);
     }
 

@@ -13,7 +13,7 @@ import java.util.HashSet;
 
 public class CustomerRepositoryTest extends AbstractTest {
 
-    Logger logger = LoggerFactory.getLogger(CustomerRepositoryTest.class);
+    private Logger logger = LoggerFactory.getLogger(CustomerRepositoryTest.class);
     @Autowired
     private MongoCustomerRepo customerRepo;
     @Autowired
@@ -37,6 +37,7 @@ public class CustomerRepositoryTest extends AbstractTest {
         Customer save = customerRepo.save(customer);
         Assert.assertNotNull(save.getId());
         Assert.assertEquals("cName", save.getName());
+        Assert.assertEquals("currentReview", save.getReviews().iterator().next().getTitle());
     }
 
 }
